@@ -32,6 +32,7 @@ describe('Context', function() {
       done();
     });
   });
+
   describe('parsing variables', function() {
     it('works', function(done) {
       var vars = this.context.variables;
@@ -67,9 +68,11 @@ describe('Context', function() {
     describe('simple success', function() {
       it('works', function(done) {
         var context = this.context;
+        
         context.on('response', function() {
           done();
         });
+
         process.nextTick(function() {
           context.exec('test', 'bang', 'another');
           context.stream.write('200');
