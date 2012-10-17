@@ -9,7 +9,7 @@
   },
   "main": "lib/",
   "scripts": {
-    "test": "mocha -r should -R tap"
+    "test": "mocha -R tap"
   },
   "engines": {
     "node": ">=0.6.0"
@@ -17,6 +17,8 @@
   "dependencies": {},
   "devDependencies": {
     "mocha": "*",
-    "should": "*"
+    "expect.js": "*",
+    "readable-stream": "*",
+    "memstream": "*"
   }
 }
