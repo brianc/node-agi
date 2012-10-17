@@ -18,6 +18,7 @@ var Context = function(stream) {
   });
   this.msg = this.read();
   this.variables = {};
+  this.pending = null;
 };
 
 require('util').inherits(Context, EventEmitter);
@@ -51,27 +52,35 @@ Context.prototype.readVariables = function(msg) {
 };
 
 Context.prototype.readResponse = function(msg) {
-  var lines = msg.split('\n');
-  if(lines.length > 2) {
-    lines.pop(); //discard last line
-  }
-  lines.pop(); //discard blank line
-  msg = lines.join('\n');
   var parsed = /^(\d{3})(?: result=)(.*)/.exec(msg);
-  this.emit('response', {code: parsed[1], result: parsed[2]});
+  var response = {
+    code: parseInt(parsed[1]),
+    result: parsed[2]
+  };
+  if(this.pending) {
+    this.pending(null, response);
+    this.pending = null;
+  }
+  this.emit('response', response);
 };
 
 Context.prototype.setState = function(state) {
   this.state = state;
 };
 
-Context.prototype.send = function(msg) {
+Context.prototype.send = function(msg, cb) {
+  this.pending = cb;
   this.stream.write(msg);
 };
 
 Context.prototype.exec = function() {
   var args = Array.prototype.slice.call(arguments, 0);
-  this.send('EXEC ' + args.join(' ') + '\n');
+  var last = args.pop();
+  if(typeof last !== 'function') {
+    args.push(last);
+    last = function() { }
+  }
+  this.send('EXEC ' + args.join(' ') + '\n', last);
 }
 
 module.exports = {

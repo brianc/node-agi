@@ -14,7 +14,9 @@ var writeVars = function(stream) {
 var context = function(cb) {
   var stream = new MemoryStream();
   var ctx = new Context(stream);
-  ctx.send = function(msg) {
+  //TODO nasty
+  ctx.send = function(msg, cb) {
+    ctx.pending = cb;
     ctx.sent = ctx.sent || [];
     ctx.sent.push(msg);
   };
@@ -25,7 +27,7 @@ var context = function(cb) {
 };
 
 describe('Context', function() {
-  before(function(done) {
+  beforeEach(function(done) {
     var self = this;
     context(function(context) {
       self.context = context;
@@ -65,11 +67,13 @@ describe('Context', function() {
   });
 
   describe('command flow', function() {
-    describe('simple success', function() {
-      it('works', function(done) {
+    describe('success', function() {
+      it('emits proper repsonse', function(done) {
         var context = this.context;
         
-        context.on('response', function() {
+        context.on('response', function(msg) {
+          expect(msg.code).to.equal(200);
+          expect(msg.result).to.eql('0');
           done();
         });
 
@@ -78,6 +82,15 @@ describe('Context', function() {
           context.stream.write('200');
           context.stream.write(' result=0\n\n');
         });
+      });
+
+      it('invokes callback with response', function(done) {
+        var context = this.context;
+        context.exec('test', 'boom', function(err, res) {
+          done(err);
+        });
+        context.stream.write('200 result=0');
+        context.stream.write('\n\n');
       });
     });
   });
