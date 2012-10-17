@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git://github.com/brianc/node-agi.git"
   },
-  "main": "lib/",
+  "main": "index.js",
   "scripts": {
     "test": "mocha -R tap"
   },
