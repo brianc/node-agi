@@ -2,7 +2,6 @@ var Readable = require('readable-stream');
 var EventEmitter = require('events').EventEmitter;
 var state = {
   init: 0,
-  variables: 1,
   waiting: 2
 };
 
@@ -30,10 +29,6 @@ Context.prototype.read = function() {
   if(!~this.msg.indexOf('\n\n')) return this.msg; //we don't have whole message
   //TODO if more than one message comes in (unlikely) we need to split
   if(this.state === state.init) {
-    //first thing to do: parse variables
-    this.setState(state.variables);
-  }
-  if(this.state === state.variables) {
     this.readVariables(this.msg);
   } else if(this.state === state.waiting) {
     this.readResponse(this.msg);
