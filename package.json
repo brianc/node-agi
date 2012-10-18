@@ -14,11 +14,12 @@
   "engines": {
     "node": ">=0.8.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "readable-stream": "*",
+  },
   "devDependencies": {
     "mocha": "*",
     "expect.js": "*",
-    "readable-stream": "*",
     "memstream": "*"
   }
 }
