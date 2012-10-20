@@ -2,7 +2,7 @@
   "author": "Brian M. Carlson <brian@enginode.com> (http://enginode.com)",
   "name": "agi",
   "description": "AGI (Asterisk Gateway Interface) for writing dialplan scripts",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
     "url": "git://github.com/brianc/node-agi.git"
@@ -15,7 +15,7 @@
     "node": ">=0.8.0"
   },
   "dependencies": {
-    "readable-stream": "*",
+    "readable-stream": "*"
   },
   "devDependencies": {
     "mocha": "*",
