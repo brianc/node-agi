@@ -217,7 +217,7 @@ describe('Context', function() {
         this.context.stream.emit('close', true);
       });
     });
-  })
+  });
 });
 
 describe('agi#createServer', function() {
