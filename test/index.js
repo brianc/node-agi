@@ -1,7 +1,7 @@
 var MemoryStream = require('memstream').MemoryStream;
 var expect = require('expect.js');
-var Context = require('./../').Context;
-var state = require('./../').state;
+var Context = require('./../lib').Context;
+var state = require('./../lib').state;
 
 //helpers
 var writeVars = function(stream) {
@@ -185,6 +185,13 @@ describe('Context', function() {
     it('sends with specified timeout', function() {
       this.context.waitForDigit(-1, function() {});
       expect(this.context.sent.join('')).to.eql('WAIT FOR DIGIT -1\n');
+    });
+  });
+
+  describe('hangup', function() {
+    it('sends "HANGUP\\n"', function() {
+      this.context.hangup();
+      expect(this.context.sent.join('')).to.eql('HANGUP\n');
     });
   });
 });
