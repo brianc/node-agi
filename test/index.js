@@ -226,4 +226,13 @@ describe('agi#createServer', function() {
     var server = agi.createServer();
     expect(server instanceof net.Server).ok();
   });
+
+  it('invokes callback when a new connection is established', function(done) {
+    var server = agi.createServer(function(context) {
+      expect(context instanceof agi.Context);
+      done();
+    });
+
+    server.emit('connection', new MemoryStream());
+  });
 });
