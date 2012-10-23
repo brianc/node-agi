@@ -11,7 +11,20 @@ npm install agi
 
 ## API
 
-### new Context(stream)
+### agi.createServer([listener])
+
+Returns a new net.Server instance.  The _listener_ will be called on a new agi connection with a single __Context__ object as described below.
+
+```js
+require('agi').createServer(function(context) {
+  //context is a new instance of agi.Context for each new agi session
+  //immedately after asterisk connects to the node process
+  context.on('variables', function(vars) {
+    console.log('received new call from: ' + vars.agi_callerid + ' with uniqueid: ' + vars.agi_uniqueid);
+  });
+}).listen(3000);
+
+### new agi.Context(stream)
 
 Constructor to create a new instance of a context.  Supply a readable and writable stream to the constructor.  Commonly _stream_ will be a `net.Socket` instance.
 

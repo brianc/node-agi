@@ -1,7 +1,8 @@
 var MemoryStream = require('memstream').MemoryStream;
+var agi = require('./../lib')
 var expect = require('expect.js');
-var Context = require('./../lib').Context;
-var state = require('./../lib').state;
+var Context = agi.Context;
+var state = agi.state;
 
 //helpers
 var writeVars = function(stream) {
@@ -193,5 +194,36 @@ describe('Context', function() {
       this.context.hangup();
       expect(this.context.sent.join('')).to.eql('HANGUP\n');
     });
+  });
+
+  describe('events', function() {
+    describe('error', function () {
+      it('is emitted when socket emits error', function(done) {
+        this.context.on('error', function(err) {
+          expect(err).to.eql('test');
+          done();
+        });
+        this.context.stream.emit('error', "test");
+      });
+    });
+
+    describe('close', function() {
+      it('is emitted when socket emits close', function(done) {
+        this.context.on('close', function(hasError) {
+          expect(hasError).ok();
+          done();
+        });
+
+        this.context.stream.emit('close', true);
+      });
+    });
+  })
+});
+
+describe('agi#createServer', function() {
+  it('returns instance of net.Server', function() {
+    var net = require('net');
+    var server = agi.createServer();
+    expect(server instanceof net.Server).ok();
   });
 });
