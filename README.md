@@ -28,3 +28,13 @@ context.exec('RecieveFax', '/tmp/myfax.tif', function(err, res) {
   //fax has been recieved by asterisk and written to /tmp/myfax.tif
 });
 ```
+
+### context.hangup([callbac])
+
+Dispatches the 'HANGUP' AGI command to asterisk.  Does __not__ close the sockets automatically.  _callback_ is called with the result of the dispatch.
+
+```js
+context.hangup(function(err, res) {
+  //the channel has now been hungup.
+});
+```
