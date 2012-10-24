@@ -23,6 +23,7 @@ require('agi').createServer(function(context) {
     console.log('received new call from: ' + vars.agi_callerid + ' with uniqueid: ' + vars.agi_uniqueid);
   });
 }).listen(3000);
+```
 
 ### new agi.Context(stream)
 
