@@ -2,9 +2,10 @@
 
 Client for asterisk AGI protocol.  Parses incomming messages into events.  Dispatches AGI commands and their responses from asterisk.  Most commonly used as a low level client for a fAGI server.
 
-## note: still a work in progress
+## Stability : Unstable
+### Note: Still a work in progress
 
-## install
+## Install
 ```
 npm install agi
 ```
@@ -17,11 +18,11 @@ Returns a new net.Server instance.  The _listener_ will be called on a new agi c
 
 ```js
 require('agi').createServer(function(context) {
-  //context is a new instance of agi.Context for each new agi session
-  //immedately after asterisk connects to the node process
-  context.on('variables', function(vars) {
-    console.log('received new call from: ' + vars.agi_callerid + ' with uniqueid: ' + vars.agi_uniqueid);
-  });
+	//context is a new instance of agi.Context for each new agi session
+	//immedately after asterisk connects to the node process
+	context.on('variables', function(vars) {
+		console.log('received new call from: ' + vars.agi_callerid + ' with uniqueid: ' + vars.agi_uniqueid);
+	});
 }).listen(3000);
 ```
 
@@ -34,8 +35,8 @@ Constructor to create a new instance of a context.  Supply a readable and writab
 Dispatches the `EXEC` AGI command to asterisk with supplied command name and arguments.  _callback_ is called with the result of the dispatch.
 
 ```js
-context.exec('ANSWER', function(err, res) {
-  //the channel is now answered
+context.answer(function(err, res) {
+	//the channel is now answered
 });
 
 context.exec('RecieveFax', '/tmp/myfax.tif', function(err, res) {
@@ -51,4 +52,12 @@ Dispatches the 'HANGUP' AGI command to asterisk.  Does __not__ close the sockets
 context.hangup(function(err, res) {
   //the channel has now been hungup.
 });
+```
+
+### context.end()
+
+Close the sockets. Effectively ending the call. Use after sending `context.hangup`.
+
+```js
+context.end();
 ```
